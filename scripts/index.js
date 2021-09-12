@@ -8,14 +8,14 @@
     // Your code here
 }
 
+
 /**
  * Creates a song DOM element based on a song object.
  */
  function createSongElement({ id, title, album, artist, duration, coverArt }) {
     const children = [];
     const classes = [];
-
-    let ul = document.createElement("ul");
+    const ul = document.createElement("ul");
     for(let i=0; i<5; i++)
     {
         if(arguments[i] === duration) 
@@ -26,7 +26,7 @@
         li.innerHTML = arguments[i];
         ul.appendChild(li);
     }
-    let pic= document.createElement("img");
+    const pic= document.createElement("img");
     pic.src= arguments[5];
     ul.appendChild(pic);
     children.push(ul);
@@ -35,15 +35,30 @@
     return createElement("div", children, classes, attrs)
 }
 
+
 /**
  * Creates a playlist DOM element based on a playlist object.
  */
-function createPlaylistElement({ id, name, songs }) {
+ function createPlaylistElement({ id, name, songs }) {
     const children = []
     const classes = []
     const attrs = {}
+    const ul= document.createElement("ul");
+    for(let i=0; i<3; i++)
+    {
+        let li= document.createElement("li");
+        li.innerHTML = arguments[i];
+        ul.appendChild(li);
+    }
+    let li= document.createElement("li");
+    li.innerHTML = durationConvert(playlistDuration(arguments[0]));  
+    ul.appendChild(li);
+    children.push(ul);
+    classes.push(["playlists"])
     return createElement("div", children, classes, attrs)
 }
+
+
     /**
      * Creates a new DOM element.
      *
@@ -56,6 +71,8 @@ function createPlaylistElement({ id, name, songs }) {
      * @param {Array} classes - the class list of the new element
      * @param {Object} attributes - the attributes for the new element
      */
+
+
     function createElement(tagName, children = [], classes = [], attributes = {}) {
     
         const element = document.createElement(tagName);
@@ -68,8 +85,9 @@ function createPlaylistElement({ id, name, songs }) {
         }
         return element;
     }
+
     
-    // You can write more code below this line
+    
     
 function durationConvert(duration)
 {
@@ -84,5 +102,32 @@ function durationConvert(duration)
   }
   return min+':'+sec
 }
+
+
+function playlistDuration(id) {
+    let sum=0;
+    const playlistSongs=GetPlaylistById(id)["songs"]; 
+    for(let i of playlistSongs) 
+    {
+        let songduration= GetsongById(i)["duration"]; 
+        sum+=songduration;
+    }
+    
+    return sum;
+    }
+
+
+function GetPlaylistById(id) 
+    {
+      let playlistFinder= player.playlists.find(x=> x["id"]===id);
+      return playlistFinder;
+    }
+
+    
+function GetsongById(id) 
+    {
+      let songFinder= player.songs.find(x=> x["id"]===id);
+      return songFinder;
+    }
     
     
