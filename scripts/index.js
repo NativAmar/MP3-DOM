@@ -130,4 +130,13 @@ function GetsongById(id)
       return songFinder;
     }
     
+
+function sortTheSongs () {
+        player.songs.sort((a, b) => (a.title > b.title) * 2 - 1)
+    }
+
+
+function sortThePlaylists () {
+        player.playlists.sort((a, b) => (a.name > b.name) * 2 - 1)
+    }
     
