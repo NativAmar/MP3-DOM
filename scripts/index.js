@@ -16,11 +16,9 @@
     const children = [];
     const classes = [];
     const ul = document.createElement("ul");
-    for(let i=0; i<5; i++)
-    {
-        if(arguments[i] === duration) 
-        {
-            arguments[i] = durationConvert(duration);
+    for(let i=0; i<5; i++) {
+        if(arguments[i] === arguments[4]) {
+            arguments[i] = durationConvert(arguments[4]);
         }
         let li= document.createElement("li");
         li.innerHTML = arguments[i];
@@ -30,7 +28,7 @@
     pic.src= arguments[5];
     ul.appendChild(pic);
     children.push(ul);
-    classes.push(["song"]);
+    classes.push(["songs"]);
     const attrs = { onclick: `playSong(${id})`,id : "song" +id }
     return createElement("div", children, classes, attrs)
 }
@@ -44,8 +42,7 @@
     const classes = []
     const attrs = {}
     const ul= document.createElement("ul");
-    for(let i=0; i<3; i++)
-    {
+    for(let i=0; i<3; i++){
         let li= document.createElement("li");
         li.innerHTML = arguments[i];
         ul.appendChild(li);
@@ -74,7 +71,6 @@
 
 
     function createElement(tagName, children = [], classes = [], attributes = {}) {
-    
         const element = document.createElement(tagName);
         if(children && typeof children !== "object") children = [children];
         element.append(...children);
@@ -89,11 +85,9 @@
     
     
     
-function durationConvert(duration)
-{
+function durationConvert(duration){
   let min = Math.floor(duration / 60);
   let sec = duration % 60;
-  
   if (min < 10){
     min = "0" + String(min);
   }
@@ -107,25 +101,21 @@ function durationConvert(duration)
 function playlistDuration(id) {
     let sum=0;
     const playlistSongs=GetPlaylistById(id)["songs"]; 
-    for(let i of playlistSongs) 
-    {
+    for(let i of playlistSongs) {
         let songduration= GetsongById(i)["duration"]; 
         sum+=songduration;
     }
-    
     return sum;
     }
 
 
-function GetPlaylistById(id) 
-    {
+function GetPlaylistById(id) {
       let playlistFinder= player.playlists.find(x=> x["id"]===id);
       return playlistFinder;
     }
 
     
-function GetsongById(id) 
-    {
+function GetsongById(id) {
       let songFinder= player.songs.find(x=> x["id"]===id);
       return songFinder;
     }
@@ -139,4 +129,31 @@ function sortTheSongs () {
 function sortThePlaylists () {
         player.playlists.sort((a, b) => (a.name > b.name) * 2 - 1)
     }
+
+const playlistDivElement= document.getElementById("playlists")
+const songDivElement= document.getElementById("songs");
+
+
+function PrintTheSongs(){
+        for(let song of player.songs){
+            const { id, title, album, artist, duration, coverArt}= song;
+            const songElement = createSongElement(id, title, album, artist, duration, coverArt);
+            songDivElement.appendChild(songElement);
+        }
+    }
+
+
+function PrintThePlaylists(){
+        for(let playlist of player.playlists){
+            const { id, name, songs}= playlist;
+            const playlistElement = createPlaylistElement(id, name, songs);
+            playlistDivElement.appendChild(playlistElement);
+        }
+    }
+    
+    
+    sortTheSongs();
+    sortThePlaylists();
+    PrintTheSongs();
+    PrintThePlaylists();
     
