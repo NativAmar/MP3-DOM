@@ -4,7 +4,7 @@
  *
  * @param {String} songId - the ID of the song to play
  */
-function playSong(songId) {
+ function playSong(songId) {
     // Your code here
 }
 
@@ -27,21 +27,33 @@ function createPlaylistElement({ id, name, songs }) {
     const attrs = {}
     return createElement("div", children, classes, attrs)
 }
-
-/**
- * Creates a new DOM element.
- *
- * Example usage:
- * createElement("div", ["just text", createElement(...)], ["nana", "banana"], {id: "bla"})
- *
- * @param {String} tagName - the type of the element
- * @param {Array} children - the child elements for the new element.
- *                           Each child can be a DOM element, or a string (if you just want a text element).
- * @param {Array} classes - the class list of the new element
- * @param {Object} attributes - the attributes for the new element
- */
-function createElement(tagName, children = [], classes = [], attributes = {}) {
-    // Your code here
-}
-
-// You can write more code below this line
+    /**
+     * Creates a new DOM element.
+     *
+     * Example usage:
+     * createElement("div", ["just text", createElement(...)], ["nana", "banana"], {id: "bla"})
+     *
+     * @param {String} tagName - the type of the element
+     * @param {Array} children - the child elements for the new element.
+     *                           Each child can be a DOM element, or a string (if you just want a text element).
+     * @param {Array} classes - the class list of the new element
+     * @param {Object} attributes - the attributes for the new element
+     */
+    function createElement(tagName, children = [], classes = [], attributes = {}) {
+    
+        const element = document.createElement(tagName);
+        if(children && typeof children !== "object") children = [children];
+        element.append(...children);
+        if (classes && typeof classes !== "object") classes = [classes];
+        element.classList.add(...classes);
+        for( let attr in attributes){
+            element.setAttribute(attr,attributes[attr]);
+        }
+        return element;
+    }
+    
+    // You can write more code below this line
+    
+  
+    
+    
