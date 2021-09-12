@@ -11,10 +11,27 @@
 /**
  * Creates a song DOM element based on a song object.
  */
-function createSongElement({ id, title, album, artist, duration, coverArt }) {
-    const children = []
-    const classes = []
-    const attrs = { onclick: `playSong(${id})` }
+ function createSongElement({ id, title, album, artist, duration, coverArt }) {
+    const children = [];
+    const classes = [];
+
+    let ul = document.createElement("ul");
+    for(let i=0; i<5; i++)
+    {
+        if(arguments[i] === duration) 
+        {
+            arguments[i] = durationConvert(duration);
+        }
+        let li= document.createElement("li");
+        li.innerHTML = arguments[i];
+        ul.appendChild(li);
+    }
+    let pic= document.createElement("img");
+    pic.src= arguments[5];
+    ul.appendChild(pic);
+    children.push(ul);
+    classes.push(["song"]);
+    const attrs = { onclick: `playSong(${id})`,id : "song" +id }
     return createElement("div", children, classes, attrs)
 }
 
@@ -54,6 +71,18 @@ function createPlaylistElement({ id, name, songs }) {
     
     // You can write more code below this line
     
+function durationConvert(duration)
+{
+  let min = Math.floor(duration / 60);
+  let sec = duration % 60;
   
+  if (min < 10){
+    min = "0" + String(min);
+  }
+  if (sec < 10) {
+    sec = "0" + String(sec);
+  }
+  return min+':'+sec
+}
     
     
