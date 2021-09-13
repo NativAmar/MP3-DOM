@@ -28,3 +28,6 @@ img{
     border-radius: 4px;
     padding: 5px;
 }
+.selected {
+    border: 5px solid red;
+}
