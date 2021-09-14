@@ -1,10 +1,18 @@
 body {
+    background-color:lightgray;
+}
+body > div {
     text-align: center;
     font-size: 24px;
 }
 
-.song { 
-    box-shadow: darkgreen;
+div > div {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-right: 250px;
+    margin-left: 250px;
+}
+.song {
     margin-top: 50px;
     margin-bottom: 50px;
     margin-right: 250px;
@@ -22,12 +30,14 @@ ul {
     list-style-type: none;
   }
 img{
-    height: 150px;
-    width: 150px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px;
-}
-.selected {
-    border: 5px solid red;
-}
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+  }
+  .songs.gallery{
+  margin: 5px
+  border: 1px solid #ccc;
+  float: left;
+  width: 180px;
+  }

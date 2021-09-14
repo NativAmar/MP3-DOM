@@ -62,3 +62,23 @@ const player = {
         { id: 5, name: "Israeli", songs: [4, 5] },
     ],
 }
+
+
+function playlistDuration(id) {
+    let sum=0;
+    let list;
+   for (let x=0;x<player.playlists.length;x++){
+      if(player.playlists[x].id===id){
+        list= player.playlists[x]
+      }
+    }
+    for (let i=0;i<list.songs.length;i++){
+      for (let j=0;j<player.songs.length;j++){
+        if (list.songs[i]===player.songs[j].id){
+         sum +=player.songs[j].duration;
+        continue;
+        }
+      }
+    }
+    return sum
+}

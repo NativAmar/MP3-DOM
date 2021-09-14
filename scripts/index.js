@@ -5,20 +5,21 @@
  * @param {String} songId - the ID of the song to play
  */
  function playSong(songId) {
-    const selectedSong = document.getElementsByName(songId);
+    const selectedS = document.getElementById(songId);
     const classes = []
     classes.push(["selected"])
     const songs = document.getElementsByClassName("song");
     for (let song of songs) {
         song.classList.remove(classes)
     }
-    selectedSong.classList.add(classes);
+    selectedS.classList.add(classes);
 }
 
 
 /**
  * Creates a song DOM element based on a song object.
  */
+/** 
  function createSongElement({ id, title, album, artist, duration, coverArt }) {
     const children = [];
     const classes = [];
@@ -39,6 +40,22 @@
     const attrs = { onclick: `playSong(${id})`,id : "song" +id }
     return createElement("div", children, classes, attrs)
 }
+*/
+
+
+function createSongElement({ id, title, album, artist, duration, coverArt }) {
+    const artistEl = createElement("span", [artist]);
+    const albumEl= createElement("span",[album]);
+    const titleEl=createElement("span",[title]);
+    const idEl=createElement("span",[id])
+    
+    const durationEl = createElement("span", ["" + durationConvert(duration)] ,["duration", "short-duration"], {onclick: `console.log('${duration}')`});
+  
+    const coverImageArtUrl = coverArt;
+    const imgEl = createElement("img", [] ,["album-art"], {src: coverImageArtUrl});
+  
+    return createElement("div", ["id: ", idEl, " title: ",titleEl, " album: ", albumEl, " Artist: ", artistEl, " Duration: ", durationEl, imgEl]);
+  }
 
 
 /**
@@ -48,17 +65,17 @@
     const children = []
     const classes = []
     const attrs = {}
-    const ul= document.createElement("ul");
-    for(let i=0; i<3; i++){
-        let li= document.createElement("li");
-        li.innerHTML = arguments[i];
-        ul.appendChild(li);
-    }
-    let li= document.createElement("li");
-    li.innerHTML = durationConvert(playlistDuration(arguments[0]));  
-    ul.appendChild(li);
-    children.push(ul);
-    classes.push(["playlists"])
+
+    // children
+    const idEl = createElement("span", ["" + id] ,["id"]);
+    const nameEl = createElement("span", ["" + name] );
+    const songsEl = createElement("span", ["" + songs] ,["songs"]);
+    const durationEl = createElement("span", ["" + durationConvert(playlistDuration(id))] ,["duration", "short-duration"]);
+
+    // push childrens and classes
+    children.push("Id: ",idEl, " name: ", nameEl, " The playlist songs: ",songsEl," Duration: ", durationEl);
+    classes.push("playlist")
+
     return createElement("div", children, classes, attrs)
 }
 
@@ -76,7 +93,7 @@
      * @param {Object} attributes - the attributes for the new element
      */
 
-
+/** 
     function createElement(tagName, children = [], classes = [], attributes = {}) {
         const element = document.createElement(tagName);
         if(children && typeof children !== "object") children = [children];
@@ -88,7 +105,28 @@
         }
         return element;
     }
+*/
 
+function createElement(tagName, children = [], classes = [], attributes = {}) {
+    const el = document.createElement(tagName);
+      
+    // Children
+    for(const child of children) {
+      el.append(child);
+    }
+  
+    // Classes
+    for(const cls of classes) {
+      el.classList.add(cls);
+    }
+  
+    // Attributes
+    for (const attr in attributes) {
+      el.setAttribute(attr, attributes[attr]);
+    }
+  
+    return el;
+  }
     
     
     
@@ -108,10 +146,12 @@ function durationConvert(duration){
 function playlistDuration(id) {
     let sum=0;
     const playlistSongs=GetPlaylistById(id)["songs"]; 
-    for(let i of playlistSongs) {
+    for(let i of playlistSongs) 
+    {
         let songduration= GetsongById(i)["duration"]; 
         sum+=songduration;
     }
+    
     return sum;
     }
 
@@ -137,30 +177,30 @@ function sortThePlaylists () {
         player.playlists.sort((a, b) => (a.name > b.name) * 2 - 1)
     }
 
-const playlistDivElement= document.getElementById("playlists")
-const songDivElement= document.getElementById("songs");
-
-
-function PrintTheSongs(){
-        for(let song of player.songs){
+    const songdiv= document.getElementById("songs");
+    const playlistDiv= document.getElementById("playlists")
+    
+    function PrintAllSongs()
+    {
+        for(let song of player.songs)
+        {
             const { id, title, album, artist, duration, coverArt}= song;
-            const songElement = createSongElement(id, title, album, artist, duration, coverArt);
-            songDivElement.appendChild(songElement);
+            const songElem = createSongElement({id, title, album, artist, duration, coverArt});
+            songdiv.appendChild(songElem);
         }
     }
-
-
-function PrintThePlaylists(){
-        for(let playlist of player.playlists){
+    function PrintAllPlaylists()
+    {
+        for(let playlist of player.playlists)
+        {
             const { id, name, songs}= playlist;
-            const playlistElement = createPlaylistElement(id, name, songs);
-            playlistDivElement.appendChild(playlistElement);
+            const playlistElem = createPlaylistElement({id, name, songs});
+            playlistDiv.appendChild(playlistElem);
         }
     }
     
     
     sortTheSongs();
     sortThePlaylists();
-    PrintTheSongs();
-    PrintThePlaylists();
-    
+    PrintAllSongs();
+    PrintAllPlaylists();
