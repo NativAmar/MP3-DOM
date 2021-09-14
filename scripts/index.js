@@ -5,14 +5,9 @@
  * @param {String} songId - the ID of the song to play
  */
  function playSong(songId) {
-    const selectedS = document.getElementById(songId);
-    const classes = []
-    classes.push(["selected"])
-    const songs = document.getElementsByClassName("song");
-    for (let song of songs) {
-        song.classList.remove(classes)
-    }
-    selectedS.classList.add(classes);
+    
+    document.getElementById(`${songId}`).style.backgroundColor="green";
+    alert("play"+songId)
 }
 
 
@@ -53,7 +48,7 @@ function createSongElement({ id, title, album, artist, duration, coverArt }) {
   
     const coverImageArtUrl = coverArt;
     const imgEl = createElement("img", [] ,["album-art"], {src: coverImageArtUrl});
-  
+    const attrs = { onclick: `playSong(song-${id})`, id:`song-${id}` };
     return createElement("div", ["id: ", idEl, " title: ",titleEl, " album: ", albumEl, " Artist: ", artistEl, " Duration: ", durationEl, imgEl]);
   }
 
