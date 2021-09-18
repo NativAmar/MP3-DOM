@@ -14,33 +14,6 @@
 }
 
 
-/**
- * Creates a song DOM element based on a song object.
- */
-/** 
- function createSongElement({ id, title, album, artist, duration, coverArt }) {
-    const children = [];
-    const classes = [];
-    const ul = document.createElement("ul");
-    for(let i=0; i<5; i++) {
-        if(arguments[i] === arguments[4]) {
-            arguments[i] = durationConvert(arguments[4]);
-        }
-        let li= document.createElement("li");
-        li.innerHTML = arguments[i];
-        ul.appendChild(li);
-    }
-    const pic= document.createElement("img");
-    pic.src= arguments[5];
-    ul.appendChild(pic);
-    children.push(ul);
-    classes.push(["songs"]);
-    const attrs = { onclick: `playSong(${id})`,id : "song" +id }
-    return createElement("div", children, classes, attrs)
-}
-*/
-
-
 function createSongElement({ id, title, album, artist, duration, coverArt }) {
     const children = [];
     const classes = [];
@@ -99,19 +72,6 @@ function createSongElement({ id, title, album, artist, duration, coverArt }) {
      * @param {Object} attributes - the attributes for the new element
      */
 
-/** 
-    function createElement(tagName, children = [], classes = [], attributes = {}) {
-        const element = document.createElement(tagName);
-        if(children && typeof children !== "object") children = [children];
-        element.append(...children);
-        if (classes && typeof classes !== "object") classes = [classes];
-        element.classList.add(...classes);
-        for( let attr in attributes){
-            element.setAttribute(attr,attributes[attr]);
-        }
-        return element;
-    }
-*/
 
 function createElement(tagName, children = [], classes = [], attributes = {}, eventListeners = {}) {
     const el = document.createElement(tagName);
@@ -228,17 +188,17 @@ function sortThePlaylists () {
  * @param {MouseEvent} event - the click event
  */
  function handleSongClickEvent(event) {
-    // Your code here
-    const songId = event.target.parentElement.id.split("-")[1];
+    const songId = Number(event.target.parentElement.id.split("-")[1]);
     const target = event.target.innerText;
   
-    if (target === "🗑️") {
+    if (onclick === "🗑️") {
         removeSong(songId);
     }
     if (target === "▶️") {
         playSong(songId);
     }  
   }
+
   function handleAddSongEvent(event) {
 
     const userInputs = inputs.children;
@@ -275,6 +235,30 @@ function sortThePlaylists () {
   }
   return max;
 }
+
+function removeSong(songId) {
+    document.getElementById(`song-${songId}`).remove();
+    console.log(player.songs)
+    let songIndex=player.songs.indexOf(getSongByID(songId))
+    player.songs.splice(songIndex,1);
+    for (let i=0; i<player.playlists.length; i++){
+      for (let j=0; j<player.playlists[i].songs.length; j++){
+        if (player.playlists[i].songs[j] === songId)
+          player.playlists[i].songs.splice(j,1);
+      }
+    }
+}
+ 
+
+
+function getSongByID(id){
+    for (let index = 0; index < player.songs.length; index++) {
+      if(player.songs[index].id === id){
+        return player.songs[index];
+      }
+  }
+  throw new Error("This song are not exist")
+  }
 
  document.getElementById("add-button").addEventListener("click", handleAddSongEvent)
     

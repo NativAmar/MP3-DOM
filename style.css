@@ -1,6 +1,8 @@
 body {
-    background-color:lightgray;
+    background-color:rgba(150, 194, 230, 0.597);
     text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+
 }
 body > div {
     text-align: center;
@@ -16,15 +18,15 @@ div > div {
 .song {
     margin-top: 50px;
     margin-bottom: 50px;
-    margin-right: 250px;
-    margin-left: 250px;
+    margin-right: 50px;
+    margin-left: 50px;
 }
 
 .playlists{
     margin-top: 50px;
     margin-bottom: 50px;
-    margin-right: 250px;
-    margin-left: 250px;
+    margin-right: 50px;
+    margin-left: 50px;
 }
 
 ul {
@@ -34,9 +36,9 @@ img{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 25%;
+    width: 15%;
   }
-  .short-duration {
+.short-duration {
     color: green;
 }
 .durationMore{
