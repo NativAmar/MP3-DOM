@@ -5,9 +5,12 @@
  * @param {String} songId - the ID of the song to play
  */
  function playSong(songId) {
-    
-    document.getElementById(`${songId}`).style.backgroundColor="green";
-    alert("play"+songId)
+    alert("You are playing song number " + songId);
+    const attention = document.getElementById(`song-${songId}`);
+    attention.style.backgroundColor="green";
+    setTimeout(() =>{
+    attention.style.backgroundColor="lightgray";
+    },1000)
 }
 
 
@@ -39,18 +42,27 @@
 
 
 function createSongElement({ id, title, album, artist, duration, coverArt }) {
-    const artistEl = createElement("span", [artist]);
-    const albumEl= createElement("span",[album]);
-    const titleEl=createElement("span",[title]);
-    const idEl=createElement("span",[id])
+    const children = [];
+    const classes = [];
     
-    const durationEl = createElement("span", ["" + durationConvert(duration)] ,["duration", "short-duration"], {onclick: `console.log('${duration}')`});
-  
+    const titleEL = createElement("div", ["Title: " + title] ,["title"]);
+    const albumEL = createElement("div", ["Album: " + album] ,["album"]);
+    const artistEl = createElement("div", ["Artist: " + artist], ["artist"]);
+    const durationEl = createElement("div", ["" + durationConvert(duration)] ,["duration",durationColor(duration)]);
     const coverImageArtUrl = coverArt;
     const imgEl = createElement("img", [] ,["album-art"], {src: coverImageArtUrl});
-    const attrs = { onclick: `playSong(song-${id})`, id:`song-${id}` };
-    return createElement("div", ["id: ", idEl, " title: ",titleEl, " album: ", albumEl, " Artist: ", artistEl, " Duration: ", durationEl, imgEl]);
-  }
+    const removeEL = createElement("button", ["🗑️"], ["button"], {}, {});
+    const addEL = createElement("button", ["▶️"], ["button"], {onclick:`playSong(${id})`}, {});
+
+    children.push(imgEl, titleEL, albumEL, artistEl, durationEl, removeEL, addEL)
+    classes.push(["song"]);
+
+    const attrs = { id: `song-${id}` };
+    const eventListeners = {};
+
+    return createElement("div", children, classes, attrs, eventListeners);
+
+}
 
 
 /**
@@ -60,18 +72,17 @@ function createSongElement({ id, title, album, artist, duration, coverArt }) {
     const children = []
     const classes = []
     const attrs = {}
+    const eventListeners = {}
 
-    // children
     const idEl = createElement("span", ["" + id] ,["id"]);
     const nameEl = createElement("span", ["" + name] );
     const songsEl = createElement("span", ["" + songs] ,["songs"]);
     const durationEl = createElement("span", ["" + durationConvert(playlistDuration(id))] ,["duration", "short-duration"]);
 
-    // push childrens and classes
     children.push("Id: ",idEl, " name: ", nameEl, " The playlist songs: ",songsEl," Duration: ", durationEl);
     classes.push("playlist")
 
-    return createElement("div", children, classes, attrs)
+    return createElement("div", children, classes, attrs, eventListeners)
 }
 
 
@@ -102,7 +113,7 @@ function createSongElement({ id, title, album, artist, duration, coverArt }) {
     }
 */
 
-function createElement(tagName, children = [], classes = [], attributes = {}) {
+function createElement(tagName, children = [], classes = [], attributes = {}, eventListeners = {}) {
     const el = document.createElement(tagName);
       
     // Children
@@ -118,6 +129,10 @@ function createElement(tagName, children = [], classes = [], attributes = {}) {
     // Attributes
     for (const attr in attributes) {
       el.setAttribute(attr, attributes[attr]);
+    }
+    // Events
+    for (act in eventListeners) {
+        element.addEventListener(act, eventListeners[act]);
     }
   
     return el;
@@ -193,6 +208,75 @@ function sortThePlaylists () {
             playlistDiv.appendChild(playlistElem);
         }
     }
+
+    function durationColor(duration){
+        if (duration<120){
+          return "short-duration";
+        }
+        if(duration>420 ){
+            return "durationMore"
+        }
+        if (duration>=120&&duration<=420){
+            return "durationBetween"
+        }
+      }
+
+      /**
+ * Acts on a click event on an element inside the songs list.
+ * Should handle clicks on play buttons and remove buttons of songs.
+ *
+ * @param {MouseEvent} event - the click event
+ */
+ function handleSongClickEvent(event) {
+    // Your code here
+    const songId = event.target.parentElement.id.split("-")[1];
+    const target = event.target.innerText;
+  
+    if (target === "🗑️") {
+        removeSong(songId);
+    }
+    if (target === "▶️") {
+        playSong(songId);
+    }  
+  }
+  function handleAddSongEvent(event) {
+
+    const userInputs = inputs.children;
+    const songInputs = 
+    { title: userInputs[0].value,
+      album: userInputs[1].value,
+      artist: userInputs[2].value,
+      duration: userInputs[3].value,
+      coverArt: userInputs[4].value
+    }
+  
+    songInputs.duration = songInputs.duration.split(":");
+    songInputs.duration = parseInt(songInputs.duration[0] *60) + parseInt(songInputs.duration[1]);
+  
+  
+    addSong(songInputs);
+  }
+
+  function addSong({ title, album, artist, duration, coverArt }){
+    const id = maxID(player.songs) + 1;
+    const newSong = { id, title, album, artist, duration, coverArt };
+    player.songs.push(newSong);
+    const songElm = createSongElement(newSong);
+    document.getElementById("songs").insertBefore(songElm, null);
+  }
+
+  function maxID (arr)
+{
+  let max=0;
+  for (let i = 0; i < arr.length; i++) 
+  {
+    if (arr[i].id > max) 
+      max = arr[i].id;
+  }
+  return max;
+}
+
+ document.getElementById("add-button").addEventListener("click", handleAddSongEvent)
     
     
     sortTheSongs();

@@ -1,5 +1,6 @@
 body {
     background-color:lightgray;
+    text-align: center;
 }
 body > div {
     text-align: center;
@@ -35,9 +36,12 @@ img{
     margin-right: auto;
     width: 25%;
   }
-  .songs.gallery{
-  margin: 5px
-  border: 1px solid #ccc;
-  float: left;
-  width: 180px;
-  }
+  .short-duration {
+    color: green;
+}
+.durationMore{
+    color: red;
+}
+.durationBetween{
+    color: blue;
+}
