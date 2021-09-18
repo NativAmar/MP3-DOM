@@ -43,3 +43,6 @@ img{
 .durationBetween{
     color: blue;
 }
+.button{
+    shape-margin: 22px;
+}
