@@ -28,10 +28,6 @@ div > div {
     margin-right: 50px;
     margin-left: 50px;
 }
-
-ul {
-    list-style-type: none;
-  }
 img{
     display: block;
     margin-left: auto;

@@ -191,7 +191,7 @@ function sortThePlaylists () {
     const songId = Number(event.target.parentElement.id.split("-")[1]);
     const target = event.target.innerText;
   
-    if (onclick === "🗑️") {
+    if (target === "🗑️") {
         removeSong(songId);
     }
     if (target === "▶️") {
@@ -238,15 +238,17 @@ function sortThePlaylists () {
 
 function removeSong(songId) {
     document.getElementById(`song-${songId}`).remove();
-    console.log(player.songs)
-    let songIndex=player.songs.indexOf(getSongByID(songId))
+
+    let songIndex = player.songs.indexOf(getSongByID(songId));
+    console.log(songIndex)
     player.songs.splice(songIndex,1);
     for (let i=0; i<player.playlists.length; i++){
-      for (let j=0; j<player.playlists[i].songs.length; j++){
-        if (player.playlists[i].songs[j] === songId)
-          player.playlists[i].songs.splice(j,1);
+        for (let j=0; j<player.playlists[i].songs.length; j++){
+          if (player.playlists[i].songs[j] === songId){
+            player.playlists[i].songs.splice(j,1);
+          } 
+        }
       }
-    }
 }
  
 
