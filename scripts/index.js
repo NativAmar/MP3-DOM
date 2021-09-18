@@ -24,7 +24,7 @@ function createSongElement({ id, title, album, artist, duration, coverArt }) {
     const durationEl = createElement("div", ["" + durationConvert(duration)] ,["duration",durationColor(duration)]);
     const coverImageArtUrl = coverArt;
     const imgEl = createElement("img", [] ,["album-art"], {src: coverImageArtUrl});
-    const removeEL = createElement("button", ["🗑️"], ["button"], {}, {});
+    const removeEL = createElement("button", ["🗑️"], ["button"], {onclick:`removeSong(${id})`}, {});
     const addEL = createElement("button", ["▶️"], ["button"], {onclick:`playSong(${id})`}, {});
 
     children.push(imgEl, titleEL, albumEL, artistEl, durationEl, removeEL, addEL)
@@ -240,7 +240,7 @@ function removeSong(songId) {
     document.getElementById(`song-${songId}`).remove();
 
     let songIndex = player.songs.indexOf(getSongByID(songId));
-    console.log(songIndex)
+    console.log(songIndex);
     player.songs.splice(songIndex,1);
     for (let i=0; i<player.playlists.length; i++){
         for (let j=0; j<player.playlists[i].songs.length; j++){
