@@ -1,1 +1,48 @@
-/* Your code here */
+body {
+    background-color:rgba(150, 194, 230, 0.597);
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+
+}
+body > div {
+    text-align: center;
+    font-size: 24px;
+}
+
+div > div {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-right: 250px;
+    margin-left: 250px;
+}
+.song {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+.playlists{
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 15%;
+  }
+.short-duration {
+    color: green;
+}
+.durationMore{
+    color: red;
+}
+.durationBetween{
+    color: blue;
+}
+.button{
+    shape-margin: 22px;
+}
